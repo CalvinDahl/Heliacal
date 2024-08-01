@@ -1,0 +1,274 @@
+/*#######################################*/
+/*############# CALVIN DAHL #############*/
+/*############## 7/16/2024 ##############*/
+/*#######################################*/
+
+/*FONT IMPORTS*/
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
+@font-face{
+	font-family: "Fair-Prosper";
+	src: url("Fonts/Fair-Prosper.woff") format("woff"),
+		 url("Fonts/Fair-Prosper.woff2") format("woff2");
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face{
+	font-family: "MusticaPro-SemiBold";
+	src: url("Fonts/MusticaPro-SemiBold.woff") format("woff"),
+		 url("Fonts/MusticaPro-SemiBold.woff2") format("woff2");
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face{
+	font-family: "Bakery";
+	src: url("Fonts/Bakery.woff") format("woff"),
+		 url("Fonts/Bakery.woff2") format("woff2");
+	font-weight: normal;
+	font-style: normal;
+}
+
+/*GENERAL SETTINGS*/
+* {
+	box-sizing: border-box;
+	font-family: "Noto Sans";
+	color: #444;
+	font-size: 30px;
+}
+
+html, body{
+	margin: 0;
+	padding: 0;
+}
+
+/*HEADER SETTINGS*/
+.nav ul {
+	margin: 0;
+	padding: 0;
+}
+
+.nav li {
+	display: inline
+}
+
+.nav a {
+	display: inline-block;
+	padding: .5em;
+	color: white;
+	text-decoration: none;
+}
+
+.main-nav {
+	text-align: center;
+	font-size: 1.1em;
+	font-weight: lighter;
+}
+
+.main-nav li {
+	padding: 0 3%;
+}
+
+.nav a:hover {
+	background-color: rgba(255, 255, 255, .3)
+}
+
+.main-header {
+	background-image: url("PageImages/Header Background.jpg");
+	background-size: cover;
+	padding-bottom: 10px;
+}
+
+.Title {
+	text-align: center;
+	margin: 0;
+	font-family:"Fair-Prosper";
+	font-size: 4em;
+	font-weight: normal;
+	color: #f4f5f5;
+	text-shadow: 1px 1px 2px #b8bfbf;
+}
+
+/*MAIN CONTENT SECTIONS*/
+.content-section {
+	display: inline-block;
+	margin: 0;
+	background-color: #e7e9e9;
+	padding: 0;
+}
+
+/*title settings*/
+.title-nav {
+	background-image: url("PageImages/Title Background.jpg");
+	background-size: cover;
+	background-position: center;
+	padding-bottom: 5px;
+	padding-top: 5px;
+	border-bottom: 1px solid #b8bfbf;
+	border-top: 1px solid #b8bfbf;
+}
+
+.title-nav h3 {
+	margin: 5px;
+	text-align: center;
+}
+
+.section-head-title {
+	color: black;
+	font-size: 3em;
+	font-family: "Bakery";
+	font-weight: bold;
+	border-bottom: 5px solid black;
+	border-top: 5px solid black;
+	padding: 0 5px 0 5px;
+}
+
+.sub-title {
+	margin: 30px;
+}
+
+.sub-title p{
+	font-style: italic;
+}
+
+/*content settings*/
+.content {
+	display: flex;
+	align-items: flex-start;
+	flex: 1;
+	vertical-align: top;
+	margin: 30px;
+	border-radius: 3px;
+	border: 1px solid #b8bfbf;
+	background-color: white;
+}
+
+.no-style {
+	text-decoration: none;
+}
+
+.content:hover {
+	box-shadow: 2px 2px 5px #333;
+}
+
+/*content image settings*/
+.section-image {
+	vertical-align: top;
+	margin: 15px;
+	border-radius: 3px;
+	border: 1px solid #849090;
+}
+
+/*content text settings*/
+.text-column {
+	flex:1;
+	vertical-align: top;
+	width: fit-content;
+	margin: 0;
+	text-align: center;
+	overflow: auto;
+}
+
+.section-content-title {
+	font-family: "MusticaPro-SemiBold";
+	font-weight: bold;
+	margin: 15px;
+	color: #333;
+	size: 2em;
+	padding-bottom: 10px;
+	border-bottom: 5px solid #333;
+	padding: 15px;
+}
+
+.section-text {
+	margin: 15px;
+	font-weight: lighter;
+}
+
+/*centering function for a block*/
+.center {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/*GRID SETTINGS FOR CLIMBING PICTURES*/
+.grid {
+	display: grid;
+	grid-template-rows: auto auto auto;
+	grid-template-columns: 1fr 1fr;
+	grid-gap: 15px;
+	padding: 15px;
+}
+
+.grid-item {
+	display: flex;
+	align-items: center;
+	margin: auto;
+}
+
+.item5 {
+	grid-column-end: span 2;
+}
+
+/*IMAGES & IMAGE SETTINGS*/
+.project-tycho-image {
+	background-image: url("PageImages/Rocket_Tycho.webp");
+	background-size: cover;	
+	height: 400px;
+	width: 300px;
+}
+
+.video-game-image {
+	background-image: url("PageImages/Points.png");
+	background-size: cover;	
+	height: 400px;
+	width: 300px;
+}
+
+.webpage-image {
+	background-image: url("PageImages/HTMLCSS.jpg");
+	background-size: cover;	
+	height: 250px;
+	width: 300px;
+}
+
+/*climbing images*/
+.climbing-one-image {
+	background-image: url("PageImages/ClimbingPic1.jpg");
+	background-size: cover;	
+	height: 500px;
+	width: 500px;
+}
+
+.climbing-two-image {
+	background-image: url("PageImages/ClimbingPic2.jpg");
+	background-size: cover;	
+	height: 500px;
+	width: 500px;
+	background-position-x: 650px;
+}
+
+.climbing-three-image {
+	background-image: url("PageImages/ClimbingPic3.jpg");
+	background-size: cover;	
+	height: 500px;
+	width: 500px;
+	background-position-y: 500px;
+}
+
+.climbing-four-image {
+	background-image: url("PageImages/ClimbingPic4.jpg");
+	background-size: cover;	
+	height: 500px;
+	width: 500px;
+	background-position-x: 500px;
+}
+
+.climbing-five-image {
+	background-image: url("PageImages/RockClimbingTeamPicture.jpg");
+	background-size: cover;	
+	height: 500px;
+	width: 900px;
+}
