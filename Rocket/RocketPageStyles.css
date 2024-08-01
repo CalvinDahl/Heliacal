@@ -1,0 +1,83 @@
+/*#######################################*/
+/*############# CALVIN DAHL #############*/
+/*############## 7/16/2024 ##############*/
+/*#######################################*/
+
+/*FONT IMPORTS*/
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
+@font-face{
+	font-family: "Fair-Prosper";
+	src: url("Fonts/Fair-Prosper.woff") format("woff"),
+		 url("Fonts/Fair-Prosper.woff2") format("woff2");
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face{
+	font-family: "MusticaPro-SemiBold";
+	src: url("Fonts/MusticaPro-SemiBold.woff") format("woff"),
+		 url("Fonts/MusticaPro-SemiBold.woff2") format("woff2");
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face{
+	font-family: "Bakery";
+	src: url("Fonts/Bakery.woff") format("woff"),
+		 url("Fonts/Bakery.woff2") format("woff2");
+	font-weight: normal;
+	font-style: normal;
+}
+
+* {
+	box-sizing: border-box;
+	font-family: "Noto Sans";
+	color: #444;
+}
+
+html, body{
+	margin: 0 20 20 20;
+	padding: 0;
+}
+
+.Title{
+	border-bottom: 5px solid #333;
+	font-family:"Fair-Prosper";
+	font-size: 40px;
+	padding-bottom: 3px;
+	color: #333;
+}
+
+.list{
+	font-style: italic;
+}
+
+.list a{
+	padding: 5 0 5 0;
+}
+
+a:link {
+  color: blue;
+  background-color: transparent;
+  text-decoration: none;
+}
+a:visited {
+  color: red;
+  background-color: transparent;
+  text-decoration: none;
+}
+a:hover {
+  color: red;
+  background-color: transparent;
+  text-decoration: underline;
+}
+a:active {
+  color: yellow;
+  background-color: transparent;
+  text-decoration: underline;
+}
+
+.section-header{
+	color: #333;
+}
