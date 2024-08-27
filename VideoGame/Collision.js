@@ -75,13 +75,8 @@ const mouse = {
 	y: 0
 }
 addEventListener('mousemove', (e) => {
-	mouse.x = (e.clientX - e.target.getBoundingClientRect().left)*WIDTH/canvas.width
-	mouse.y = (e.clientY - e.target.getBoundingClientRect().top)*HEIGHT/canvas.height
-	console.log(mouse.x)
-	//update Player Aiming Position
-	mouse.x -= player.x
-	mouse.y -= player.y
-	player.aimAngle = Math.atan2(mouse.y,mouse.x) / Math.PI * 180
+	mouse.x = (e.clientX - e.target.getBoundingClientRect().left)*canvas.width/CANVAS_WIDTH
+	mouse.y = (e.clientY - e.target.getBoundingClientRect().top)*canvas.height/CANVAS_HEIGHT
 })
 addEventListener('mousedown', (e) => {
 	if(e.button === 0){ //left click

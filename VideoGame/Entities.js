@@ -34,6 +34,8 @@ class Player extends Entity{
 		this.swordId = 1
 		this.SwordOrBow = true //True for Bow, False for Sword
 		this.scale = 1 //View % of Screen
+		this.mousex = 0
+		this.mousey = 0
 		
 		//Timers
 		this.jumpTimer = 0
@@ -47,31 +49,35 @@ class Player extends Entity{
 	updatePosition(){
 		
 		if(keys.right.pressed){ //right movement
-			this.dx = 3*this.ratio //Standard Movement
+			if(this.jumpTimer > 40){
+				this.dx = 3 //Standard Movement
+			}
 			
 			if(keys.rightClick.pressed && keys.rightClick.toggled && this.jumpTimer > 80){
-				this.x += 15
+				this.dx = 10
 				keys.rightClick.toggled = false
 				this.jumpTimer = 0
-			} //Jump Movement Check
+			} else{
+				keys.rightClick.toggled = true
+			}//Jump Movement Check To Right
 			
 		} else if(keys.left.pressed){ //left movement
-			this.dx = -3*this.ratio //Standard Movement
+			if(this.jumpTimer > 40){
+				this.dx = -3 //Standard Movement
+			}
 			
 			if(keys.rightClick.pressed && keys.rightClick.toggled && this.jumpTimer > 80){
-				this.x -= 15
+				this.dx = -10
 				keys.rightClick.toggled = false
 				this.jumpTimer = 0
-			} //Jump Movement Check
+			}else{
+				keys.rightClick.toggled = true
+			} //Jump Movement Check To Left
 			
-		}else{
-			this.jumpTimer++
-			keys.rightClick.toggled = true
 		}
-		//console.log(this.jumpTimer)
-		console.log(keys.rightClick.toggled)
+		this.jumpTimer++ //Increment JumpTimer
 		
-		this.dx -= this.friction * this.dx
+		this.dx -= this.friction * this.dx * this.ratio
 		this.x += this.dx
 		if (Math.abs(this.dx) < 0.5){
 			this.dx = 0
@@ -86,6 +92,7 @@ class Player extends Entity{
 		if(keys.down.pressed && keys.down.toggled){ //Swap Attack Mode
 			this.SwordOrBow = !this.SwordOrBow
 			keys.down.toggled = false
+			keys.leftClick.toggled = false
 			if(this.SwordOrBow){ //Change View Scale
 				this.scale = bows[this.bowId].scale
 			}
@@ -105,22 +112,40 @@ class Player extends Entity{
 	}
 	translate(){
 		ctx.resetTransform()
-		if (this.x > canvas.width - canvas.width/(2*this.scale)){
+		if (this.x > canvas.width - canvas.width/(2*this.scale)){ //Right Hand Side Scroll Stop
 			ctx.scale(this.scale,this.scale)
 			ctx.translate(-canvas.width + canvas.width/(this.scale), -this.y + canvas.height/(2*this.scale))
+			//UPDATE MOUSE POSITION (Inverse of Translate and subtract x and y position)
+			this.mousex = mouse.x/this.scale - this.x - canvas.width/(this.scale) + canvas.width
+			this.mousey = mouse.y/this.scale - canvas.height/(2*this.scale)
 		}
-		else if (this.x < canvas.width/(2*this.scale)){
+		else if (this.x < canvas.width/(2*this.scale)){ //Left Hand Side Scroll Stop
 			ctx.scale(this.scale,this.scale)
 			ctx.translate(0,-this.y + canvas.height/(2*this.scale))
+			//UPDATE MOUSE POSITION (Inverse of Translate and subtract x and y position)
+			this.mousex = mouse.x/this.scale - this.x
+			this.mousey = mouse.y/this.scale - canvas.height/(2*this.scale)
 		}
-		/*if (this.y > canvas.height - canvas.height/(2*this.scale)){
-			ctx.translate(
-		}*/
-		else{
+		else{ //Mid Screen Scroll (Center Player)
 			ctx.scale(this.scale,this.scale)
 			ctx.translate(-this.x,-this.y)
 			ctx.translate(canvas.width/(2*this.scale), canvas.height/(2*this.scale))
+			//UPDATE MOUSE POSITION (Inverse of Translate and subtract x and y position)
+			this.mousex = mouse.x/this.scale - canvas.width/(2*this.scale)
+			this.mousey = mouse.y/this.scale - canvas.height/(2*this.scale)
 		}
+		if (this.y < canvas.height/(2*this.scale)){ //Top of Screen Scroll Stop
+			ctx.translate(0, this.y - canvas.height/(2*this.scale))
+			//UPDATE MOUSE POSITION (Inverse of Translate and subtract x and y position)
+			this.mousey = mouse.y/this.scale - this.y
+		}
+		else if (this.y > canvas.height - canvas.height/(2*this.scale)){ //Bottom of Screen Scroll Stop
+			ctx.translate(0, this.y + canvas.height/(2*this.scale) - canvas.height)
+			//UPDATE MOUSE POSITION (Inverse of Translate and subtract x and y position)
+			this.mousey = mouse.y/this.scale - canvas.height/(this.scale) - this.y + canvas.height
+		}
+		//Update player aimangle
+		player.aimAngle = Math.atan2(this.mousey,this.mousex) / Math.PI * 180
 	}
 	testCollision(){
 		Triangle.stickyCollision(this)
@@ -136,7 +161,8 @@ class Player extends Entity{
 
 class Enemy extends Entity{
 	constructor({x,y,id}){
-		super(x,y,-2,0,20,20,1,10,id,'red',0.1,0.1)
+		super(x,y,-1,0,20,20,1,10,id,'red',0.1,0.1)
+		this.swordId = 1
 	}
 	draw(){
 		ctx.fillStyle = this.color
@@ -144,7 +170,7 @@ class Enemy extends Entity{
 		//ctx.restore()
 	}
 	updatePosition(){
-		this.x += this.dx
+		this.x += this.dx*this.ratio
 		this.y += this.dy
 		this.dy += this.gravity
 		this.index = enemies.findIndex(x => x.id === this.id) //Indexing Enemies
@@ -273,19 +299,19 @@ class Sword{
 		})
 	}
 	update(){
-		if(keys.up.pressed && keys.up.toggled && this.timer === this.speed){ //attack
+		if(keys.leftClick.pressed && keys.leftClick.toggled && this.timer === this.speed){ //attack
 			this.x = player.x + player.width
 			this.y = player.y + player.height/2 - this.height/2
 			this.draw()
 			this.testCollision()
-			keys.up.toggled = false
+			keys.leftClick.toggled = false
 			this.timer = 0
 		}
 		else if (this.timer < this.speed){
 			this.timer++
 		}
-		else if(!keys.up.pressed){
-			keys.up.toggled = true
+		else if(!keys.leftClick.pressed){
+			keys.leftClick.toggled = true
 		}
 	}
 }
@@ -370,13 +396,14 @@ Triangle.stickyCollision = function(self){
 		
 		let current_x = self.x + self.width*0.5 - triangle.position.x_one //midpoint of entity wrt triangle starting x position
 		let top = triangle.slope * current_x + triangle.position.y_one //y = mx + b (y position based on x position on triangle)
-
+		//self.ratio = triangle.slope
+		
 		if (self.x + self.width*0.5 >= triangle.position.x_one &&
 			self.x + self.width*0.5 <= triangle.position.x_two){
 			self.dy = 0
 			self.y = top - self.height
-			//Player ratio effects the players x velocity
-			self.ratio = 0.5**(1+Math.abs(triangle.slope)) + 0.5
+			//self.ratio effects the players and enemies x velocity
+			self.ratio = 0.65**(1+Math.abs(triangle.slope)) + 0.35
 		}
 	})
 } // Sticky Terrain Collision that considers friction and slope (Used for player)
