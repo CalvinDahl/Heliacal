@@ -35,7 +35,7 @@
 	box-sizing: border-box;
 	font-family: "Noto Sans";
 	color: #444;
-	font-size: 30px;
+	font-size: 1.1em;
 }
 
 html, body{
@@ -78,6 +78,17 @@ html, body{
 	background-image: url("PageImages/Header Background.jpg");
 	background-size: cover;
 	padding-bottom: 10px;
+}
+
+.linkedIn {
+	display: inline-block;
+	padding: .5em;
+	align: right;
+	width:1.1em;
+	height:1.1em;
+	background-image: url("PageImages/LinkedIn.png");
+	background-size: contain;	
+
 }
 
 .Title {
@@ -184,6 +195,7 @@ html, body{
 .section-text {
 	margin: 15px;
 	font-weight: lighter;
+	font-size: calc(0.4em + 1.5vw);
 }
 
 /*centering function for a block*/
@@ -238,37 +250,37 @@ html, body{
 .climbing-one-image {
 	background-image: url("PageImages/ClimbingPic1.jpg");
 	background-size: cover;	
-	height: 500px;
-	width: 500px;
+	height: 44vw;
+	width: 44vw;
 }
 
 .climbing-two-image {
 	background-image: url("PageImages/ClimbingPic2.jpg");
 	background-size: cover;	
-	height: 500px;
-	width: 500px;
-	background-position-x: 650px;
+	height: 44vw;
+	width: 44vw;
+	background-position-x: 55vw;
 }
 
 .climbing-three-image {
 	background-image: url("PageImages/ClimbingPic3.jpg");
 	background-size: cover;	
-	height: 500px;
-	width: 500px;
-	background-position-y: 500px;
+	height: 44vw;
+	width: 44vw;
+	background-position-y: 40vw;
 }
 
 .climbing-four-image {
 	background-image: url("PageImages/ClimbingPic4.jpg");
 	background-size: cover;	
-	height: 500px;
-	width: 500px;
-	background-position-x: 500px;
+	height: 44vw;
+	width: 44vw;
+	background-position-x: 40vw;
 }
 
 .climbing-five-image {
 	background-image: url("PageImages/RockClimbingTeamPicture.jpg");
 	background-size: cover;	
-	height: 500px;
-	width: 900px;
+	height: 50vw;
+	width: 90vw;
 }
