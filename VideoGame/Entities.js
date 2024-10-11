@@ -36,9 +36,11 @@ class Player extends Entity{
 		this.scale = 1 //View % of Screen
 		this.mousex = 0
 		this.mousey = 0
+		this.directionMod = 0 //Moving Left, Right or Standing Still
 		
 		//Timers
 		this.jumpTimer = 0
+		this.attackTimer = 0
 	}
 	draw(){
 		ctx.fillStyle = this.color
@@ -50,11 +52,11 @@ class Player extends Entity{
 		
 		if(keys.right.pressed){ //right movement
 			if(this.jumpTimer > 40){
-				this.dx = 3 //Standard Movement
+				this.dx = 3*this.ratio //Standard Movement
 			}
 			
 			if(keys.rightClick.pressed && keys.rightClick.toggled && this.jumpTimer > 80){
-				this.dx = 10
+				this.dx = 10*this.ratio
 				keys.rightClick.toggled = false
 				this.jumpTimer = 0
 			} else{
@@ -63,11 +65,11 @@ class Player extends Entity{
 			
 		} else if(keys.left.pressed){ //left movement
 			if(this.jumpTimer > 40){
-				this.dx = -3 //Standard Movement
+				this.dx = -3*this.ratio //Standard Movement
 			}
 			
 			if(keys.rightClick.pressed && keys.rightClick.toggled && this.jumpTimer > 80){
-				this.dx = -10
+				this.dx = -10*this.ratio
 				keys.rightClick.toggled = false
 				this.jumpTimer = 0
 			}else{
@@ -80,8 +82,11 @@ class Player extends Entity{
 		this.dx -= this.friction * this.dx * this.ratio
 		this.x += this.dx
 		if (Math.abs(this.dx) < 0.5){
-			this.dx = 0
-		}
+			this.dx = 0 //Stop Player at certain x velocity, and update facing direction
+			this.directionMod = 0
+		} else if (this.dx > 0){
+			this.directionMod = 1 //Moving to the right
+		} else this.directionMod = 2 //Moving to the left
 		/*
 		this.y += this.dy
 		this.dy += this.gravity
@@ -104,11 +109,17 @@ class Player extends Entity{
 		}
 		if(this.SwordOrBow){
 			this.translate()//Zoom In And Follow Player
-			bows[this.bowId].update()
+			bows[this.bowId].playerAttack()
 		} else{
 			this.translate() //Zoom In And Follow Player
-			swords[this.swordId].update()
+			if(keys.leftClick.pressed && keys.leftClick.toggled){ //Left Click Check
+				swords[this.swordId].playerAttack()
+			}
+			else if(!keys.leftClick.pressed){
+				keys.leftClick.toggled = true
+			}
 		}
+		this.attackTimer++ //Update Attack Timer
 	}
 	translate(){
 		ctx.resetTransform()
@@ -163,6 +174,9 @@ class Enemy extends Entity{
 	constructor({x,y,id}){
 		super(x,y,-1,0,20,20,1,10,id,'red',0.1,0.1)
 		this.swordId = 1
+		
+		//Timers
+		this.attackTimer = 0
 	}
 	draw(){
 		ctx.fillStyle = this.color
@@ -175,6 +189,14 @@ class Enemy extends Entity{
 		this.dy += this.gravity
 		this.index = enemies.findIndex(x => x.id === this.id) //Indexing Enemies
 	}
+	attack(){
+		if(Math.abs(this.x - player.x) < 10){
+			swords[this.swordId].enemyAttack(this,player)
+			console.log("hello")
+		}
+		this.attackTimer++
+	}
+	
 	testCollision(){
 		Triangle.stickyCollision(this)
 	}
@@ -185,6 +207,7 @@ class Enemy extends Entity{
 	}
 	update(){
 		this.updatePosition()
+		this.attack()
 		this.draw()
 		this.testCollision()
 		this.toRemove()
@@ -258,7 +281,7 @@ class Bow{
 		this.power = 0
 	}
 	
-	update(){
+	playerAttack(){
 		if(keys.leftClick.pressed){ //shoot
 			if(this.power <= this.maxPower){
 				this.power += this.reload
@@ -272,6 +295,7 @@ class Bow{
 			keys.leftClick.toggled = false
 		}
 	}
+	
 }
 
 class Sword{
@@ -284,7 +308,6 @@ class Sword{
 		this.color = 'blue'
 		this.x = 0
 		this.y = 0
-		this.timer = 0
 	}
 	draw(){
 		ctx.fillStyle = this.color
@@ -298,20 +321,26 @@ class Sword{
 			}
 		})
 	}
-	update(){
-		if(keys.leftClick.pressed && keys.leftClick.toggled && this.timer === this.speed){ //attack
+	playerAttack(){
+		if(player.attackTimer >= this.speed){ //attack
 			this.x = player.x + player.width
 			this.y = player.y + player.height/2 - this.height/2
 			this.draw()
 			this.testCollision()
 			keys.leftClick.toggled = false
-			this.timer = 0
+			player.attackTimer = 0
 		}
-		else if (this.timer < this.speed){
-			this.timer++
-		}
-		else if(!keys.leftClick.pressed){
-			keys.leftClick.toggled = true
+	}
+	
+	enemyAttack(entity1,entity2){
+		if(entity1.attackTimer >= this.speed){ //attack
+			this.x = entity1.x + entity1.width
+			this.y = entity1.y + entity1.height/2 - this.height/2
+			this.draw()
+			if(rectangleCollision(this,entity2)){
+				entity2.hp -= 1;
+			}
+			entity1.attackTimer = 0
 		}
 	}
 }
